@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nails By Taiss | Réservation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           ZONE COULEURS (Esthétique / Ongles)
+           ========================================= */
+        :root {
+            --bg-color: #FAFAFA;        /* Gris très clair / blanc cassé */
+            --card-bg: #FFFFFF;         /* Fond des cartes */
+            --accent: #E2D4C8;          /* Beige Nude (très tendance pour les ongles) */
+            --accent-dark: #B89C84;     /* Beige foncé / Camel */
+            --text: #333333;            /* Gris foncé pour le texte */
+            --alert-bg: #FFF3F3;        
+            --alert-border: #D88B8B;    
+        }
+
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text); margin: 0; padding: 0; line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; text-align: center; font-weight: 600; }
+        
+        /* HEADER */
+        header {
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.9)), url('header-nails.jpg');
+            background-size: cover; background-position: center; padding: 50px 20px 40px;
+            text-align: center; border-bottom: 5px solid var(--accent);
+        }
+        header h1 { font-size: 2.5rem; color: var(--text); letter-spacing: 2px; margin-bottom: 5px; }
+        .contact-info { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+        .btn-header { display: inline-block; background: var(--text); color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .btn-header:hover { background: var(--accent-dark); }
+
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        section { background: var(--card-bg); padding: 35px 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); margin-bottom: 40px; }
+        h2 { color: var(--accent-dark); font-size: 1.8rem; margin-bottom: 30px; position: relative; }
+        h2::after { content: ''; width: 50px; height: 3px; background: var(--accent); display: block; margin: 10px auto 0; }
+
+        /* REGLES & ALERTES */
+        .rules-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .rule-box { padding: 15px; border-radius: 8px; font-size: 0.9rem; }
+        .rule-red { background: var(--alert-bg); border-left: 4px solid var(--alert-border); }
+        .rule-neutral { background: #F9F9F9; border-left: 4px solid var(--accent-dark); }
+        .rule-title { font-weight: 600; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
+
+        /* CARTES PRESTATIONS AVEC PHOTOS */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .service-card { border: 1px solid #eee; border-radius: 10px; overflow: hidden; transition: transform 0.2s; background: #fff; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .service-img { width: 100%; height: 200px; object-fit: cover; background-color: var(--accent); }
+        .service-content { padding: 15px; text-align: center; }
+        .service-name { font-weight: 600; font-size: 1rem; margin-bottom: 5px; }
+        .service-price { color: var(--accent-dark); font-weight: 600; font-size: 1.1rem; }
+        
+        /* OFFRES & DIVERS */
+        .list-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding: 10px 0; font-size: 0.95rem; }
+
+        /* RESERVATION */
+        .booking-box { text-align: center; background: #fafafa; border: 2px solid var(--accent); padding: 30px; border-radius: 12px; }
+        select { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1rem; outline: none; }
+        
+        /* CHECKBOX CGV */
+        .cgv-container { display: flex; align-items: flex-start; text-align: left; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px; font-size: 0.85rem; }
+        .cgv-container input { margin-top: 3px; margin-right: 10px; width: auto; cursor: pointer; }
+        
+        .btn-book { display: inline-block; background: var(--text); color: #fff; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: 0.3s; width: 100%; box-sizing: border-box; }
+        .btn-book:hover { background: var(--accent-dark); }
+        .btn-disabled { background: #ccc !important; pointer-events: none; }
+
+        /* FOOTER & MODALS (CGV/Mentions) */
+        footer { text-align: center; padding: 30px 20px; font-size: 0.8rem; color: #888; border-top: 1px solid #eee; }
+        .legal-links { margin-top: 10px; }
+        .legal-links a { color: var(--text); text-decoration: underline; cursor: pointer; margin: 0 10px; }
+
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 10% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; text-align: left; }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: #000; }
+
+        /* Cacher la sélection de réservation tant qu'une option n'est pas choisie */
+        #booking-action { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Nails.ByTaiss</h1>
+    <div class="contact-info">
+        📍 Lieu privé • 📱 07 67 16 17 94<br>
+        Instagram : @Nails.ByTaiss
+    </div>
+    <a href="#booking-section" class="btn-header">Prendre RDV</a>
+</header>
+
+<div class="container">
+
+    <section>
+        <h2>⚠️ À Lire Avant de Réserver</h2>
+        <div class="rules-grid">
+            <div class="rule-box rule-red">
+                <span class="rule-title">RETARDS & ANNULATIONS</span>
+                Au bout de <strong>15 min de retard</strong>, le RDV est automatiquement annulé et l'acompte n'est pas remboursé. Annulation à faire 48h à l'avance.
+            </div>
+            <div class="rule-box rule-neutral">
+                <span class="rule-title">PAIEMENT</span>
+                Les prestations sont à régler en <strong>espèces ou en virement</strong> en attendant que le lecteur carte arrive.
+            </div>
+            <div class="rule-box rule-neutral">
+                <span class="rule-title">MINEURS & ACCOMPAGNANTS</span>
+                RDV acceptés à partir de 16 ans (avec accord parental jusqu'à 18 ans). Les enfants et un accompagnant sont autorisés si l'institut reste paisible.
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Prestations Mains</h2>
+        <div class="services-grid" id="mains-container">
+            </div>
+    </section>
+
+    <section>
+        <h2>Prestations Pieds</h2>
+        <div class="services-grid" id="pieds-container">
+            </div>
+    </section>
+
+    <section>
+        <h2>Divers & Fidélité</h2>
+        <div id="divers-container" style="margin-bottom: 20px;"></div>
+        
+        <h3 style="text-align:left; color:var(--accent-dark); font-size:1.2rem; margin-top:20px;">Offres</h3>
+        <div class="list-row"><span>Au bout de 5 poses</span> <strong>-5%</strong></div>
+        <div class="list-row"><span>Au bout de 10 poses</span> <strong>-15%</strong></div>
+        <div class="list-row"><span>Étudiants (sur justificatif)</span> <strong>-10%</strong></div>
+    </section>
+
+    <section id="booking-section">
+        <h2>Prendre Rendez-vous</h2>
+        <div class="booking-box">
+            <select id="service-select" onchange="showBookingAction()">
+                <option value="">-- Choisissez votre prestation --</option>
+            </select>
+
+            <div id="booking-action">
+                <div class="cgv-container">
+                    <input type="checkbox" id="cgv-checkbox" onchange="toggleBookingButton()">
+                    <label for="cgv-checkbox">
+                        Je confirme avoir lu les règles de l'institut, être majeur(e) (ou avoir une autorisation), et j'accepte les <a onclick="openModal('cgv-modal')" style="color:var(--accent-dark); text-decoration:underline;">Conditions Générales de Vente</a>.
+                    </label>
+                </div>
+
+                <a id="zcal-link" href="#" target="_blank" class="btn-book btn-disabled">RÉSERVER MON CRÉNEAU</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    © 2026 Nails.ByTaiss - Tous droits réservés.<br>
+    <div class="legal-links">
+        <a onclick="openModal('mentions-modal')">Mentions Légales</a> | 
+        <a onclick="openModal('cgv-modal')">CGV</a>
+    </div>
+</footer>
+
+<div id="mentions-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('mentions-modal')">&times;</span>
+        <h3>Mentions Légales</h3>
+        <p><strong>Éditeur du site (Prestataire Technique) :</strong> [Ton Nom/Société]. Le créateur du site n'est pas responsable des services fournis.</p>
+        <p><strong>Prestataire de service :</strong> Nails.ByTaiss, géré par [Nom de Taiss]. Contact : 07.67.16.17.94.</p>
+        <p><strong>Hébergement :</strong> Cloudflare Pages.</p>
+    </div>
+</div>
+
+<div id="cgv-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('cgv-modal')">&times;</span>
+        <h3>Conditions Générales de Vente</h3>
+        <p><strong>1. Réservation :</strong> Un acompte peut être demandé via la plateforme de réservation.</p>
+        <p><strong>2. Retards :</strong> Au-delà de 15 minutes, la prestation est annulée sans remboursement de l'acompte.</p>
+        <p><strong>3. Responsabilité :</strong> L'éditeur technique du site décline toute responsabilité quant à la qualité, la sécurité ou les litiges liés à la prestation ongulaire. Le contrat est conclu exclusivement entre la cliente et Nails.ByTaiss.</p>
+    </div>
+</div>
+
+<script>
+    /* ---------------------------------------------------------
+       CONFIGURATION DE NAILS.BYTAISS
+       --------------------------------------------------------- */
+    const PRESTATIONS = {
+        mains: [
+            { nom: "Semi-permanent", prix: "28€", photo: "photo-semi.jpg", lien_zcal: "LIEN_ZCAL_1" },
+            { nom: "Gainage ongle naturel", prix: "35€", photo: "photo-gainage.jpg", lien_zcal: "LIEN_ZCAL_2" },
+            { nom: "Pose américaine", prix: "45/55€", photo: "photo-americaine.jpg", lien_zcal: "LIEN_ZCAL_3" },
+            { nom: "Capsule + Gel", prix: "45€", photo: "photo-capsule.jpg", lien_zcal: "LIEN_ZCAL_4" },
+            { nom: "Remplissage", prix: "38€", photo: "photo-remplissage.jpg", lien_zcal: "LIEN_ZCAL_5" }
+        ],
+        pieds: [
+            { nom: "Base renforcée", prix: "35€", photo: "photo-pieds1.jpg", lien_zcal: "LIEN_ZCAL_6" },
+            { nom: "Remplissage", prix: "38€", photo: "photo-pieds2.jpg", lien_zcal: "LIEN_ZCAL_7" },
+            { nom: "Semi-permanent", prix: "28€", photo: "photo-pieds3.jpg", lien_zcal: "LIEN_ZCAL_8" }
+        ],
+        divers: [
+            { nom: "Dépose extérieur", prix: "20€", lien_zcal: "LIEN_ZCAL_9" },
+            { nom: "Dépose", prix: "15€", lien_zcal: "LIEN_ZCAL_10" },
+            { nom: "Ongle cassé", prix: "2€", lien_zcal: "LIEN_ZCAL_11" },
+            { nom: "French / Baby-Boomer", prix: "5€", lien_zcal: "LIEN_ZCAL_12" }
+        ]
+    };
+
+    /* ---------------------------------------------------------
+       GÉNÉRATION AUTOMATIQUE DU SITE
+       --------------------------------------------------------- */
+    function initSite() {
+        const selectMenu = document.getElementById('service-select');
+
+        // Génération MAINS (Avec Photos)
+        const mainsDiv = document.getElementById('mains-container');
+        PRESTATIONS.mains.forEach(item => {
+            mainsDiv.innerHTML += `
+                <div class="service-card">
+                    <img src="${item.photo}" alt="${item.nom}" class="service-img" onerror="this.src='https://via.placeholder.com/300x200/E2D4C8/333?text=Photo+Ongles'">
+                    <div class="service-content">
+                        <div class="service-name">${item.nom}</div>
+                        <div class="service-price">${item.prix}</div>
+                    </div>
+                </div>`;
+            selectMenu.add(new Option(`${item.nom} (Mains) - ${item.prix}`, item.lien_zcal));
+        });
+
+        // Génération PIEDS (Avec Photos)
+        const piedsDiv = document.getElementById('pieds-container');
+        PRESTATIONS.pieds.forEach(item => {
+            piedsDiv.innerHTML += `
+                <div class="service-card">
+                    <img src="${item.photo}" alt="${item.nom}" class="service-img" onerror="this.src='https://via.placeholder.com/300x200/E2D4C8/333?text=Photo+Pieds'">
+                    <div class="service-content">
+                        <div class="service-name">${item.nom}</div>
+                        <div class="service-price">${item.prix}</div>
+                    </div>
+                </div>`;
+            selectMenu.add(new Option(`${item.nom} (Pieds) - ${item.prix}`, item.lien_zcal));
+        });
+
+        // Génération DIVERS (Sans photo, en liste simple)
+        const diversDiv = document.getElementById('divers-container');
+        PRESTATIONS.divers.forEach(item => {
+            diversDiv.innerHTML += `<div class="list-row"><span>${item.nom}</span> <strong>${item.prix}</strong></div>`;
+            selectMenu.add(new Option(`${item.nom} - ${item.prix}`, item.lien_zcal));
+        });
+    }
+
+    // Gestion de l'affichage du bouton et de la case CGV
+    function showBookingAction() {
+        const val = document.getElementById('service-select').value;
+        const actionBox = document.getElementById('booking-action');
+        const btn = document.getElementById('zcal-link');
+        
+        if (val) {
+            actionBox.style.display = 'block';
+            btn.href = val; // On met le lien Zcal dans le bouton
+        } else {
+            actionBox.style.display = 'none';
+        }
+        // Réinitialiser la case à cocher si on change de prestation
+        document.getElementById('cgv-checkbox').checked = false;
+        toggleBookingButton();
+    }
+
+    function toggleBookingButton() {
+        const checkbox = document.getElementById('cgv-checkbox');
+        const btn = document.getElementById('zcal-link');
+        if (checkbox.checked) {
+            btn.classList.remove('btn-disabled');
+        } else {
+            btn.classList.add('btn-disabled');
+        }
+    }
+
+    // Gestion des Modals (Pop-ups) juridiques
+    function openModal(id) { document.getElementById(id).style.display = 'block'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; }
+    }
+
+    // Lancer la création du site au chargement
+    initSite();
+</script>
+
+</body>
+</html>
